@@ -2,6 +2,7 @@ package com.itemmanagement.controller;
 
 import com.itemmanagement.model.Item;
 import com.itemmanagement.service.ItemService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,16 @@ public class ItemController {
     // Get item by ID
     @GetMapping("/{id}")
     public ResponseEntity<?> getItem(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getItemById(id));
+
+        Item item = service.getItemById(id);
+
+        if (item == null) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Item not found with id: " + id);
+        }
+
+        return ResponseEntity.ok(item);
     }
+
 }

@@ -18,7 +18,10 @@ public class ItemService {
     }
 
     public Item getItemById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Item not found"));
+        return items.stream()
+                .filter(item -> item.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
+
 }
