@@ -33,17 +33,9 @@ public class ItemController {
 
     // Get item by ID
     @GetMapping("/{id}")
-    public ResponseEntity<?> getItem(@PathVariable Long id) {
-
-        Item item = service.getItemById(id);
-
-        if (item == null) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Item not found with id: " + id);
-        }
-
-        return ResponseEntity.ok(item);
+    public ResponseEntity<Item> getItem(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getItemById(id));
     }
+
 
 }

@@ -2,18 +2,16 @@ package com.itemmanagement.service;
 
 import com.itemmanagement.model.Item;
 import com.itemmanagement.repository.ItemRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
 
     private final ItemRepository repository;
-
-
-    private final List<Item> items = new ArrayList<>();
 
     public ItemService(ItemRepository repository) {
         this.repository = repository;
@@ -24,10 +22,12 @@ public class ItemService {
     }
 
     public Item getItemById(Long id) {
-        return items.stream()
-                .filter(item -> item.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Item not found with id: " + id
+                ));
     }
+
 
 }
